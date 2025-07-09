@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abundance Brasil</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              abundanceGreen: '#2E7D32',      // A rich, vibrant green
+              abundanceGreenDark: '#1B5E20', // A darker shade for primary actions or contrasts
+              aiPurple: '#7E57C2',          // A friendly and modern purple for AI features
+              primaryBlue: '#1976D2',        // A trustworthy blue for accents and links
+              darkGray: '#263238',          // For main text, headings
+              mediumGray: '#546E7A',        // For secondary text, descriptions
+              lightGray: '#90A4AE',         // For borders, disabled states, subtle text
+              lighterGray: '#ECEFF1',       // For backgrounds of elements like chat bubbles
+              offWhite: '#FAFAFA',          // Main page background for a clean look
+            }
+          }
+        }
+      }
+    </script>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.1.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/",
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.5.1"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body class="bg-offWhite">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+</body>
+</html>
