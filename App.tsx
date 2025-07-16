@@ -10,15 +10,14 @@ import { userSession, userApi, handleApiError } from './services/apiService';
 import DashboardPrincipalPage from './pages/DashboardPrincipalPage';
 import MapeieSuaTerraIntegrated from './components/MapeieSuaTerraIntegrated';
 import AvalieSuaTerraIntegrated from './components/AvalieSuaTerraIntegrated';
+import ValorizeSuaTerraIntegrated from './components/ValorizeSuaTerraIntegrated';
+import MonetizeSuaTerraIntegrated from './components/MonetizeSuaTerraIntegrated';
 import MarketplacePage from './pages/MarketplacePage';
 import MeusAtivosProjetosPage from './pages/MeusAtivosProjetosPage';
 import EcossistemaSyntropyPage from './pages/EcossistemaSyntropyPage';
 
 // Placeholder for other pages
 const ConfiguracoesContaPage: React.FC = () => <div className="p-6 text-xl">Conteúdo Configurações da Conta</div>;
-const ValorizeSuaTerraPage: React.FC = () => <div className="p-6 text-xl">Conteúdo ValorizeSuaTerra (Em Breve)</div>;
-const MonetizePage: React.FC = () => <div className="p-6 text-xl">Conteúdo Monetize (Em Breve)</div>;
-
 
 const CriarNovaFlorestaFlow: React.FC = () => {
   const { currentTab } = useAbundanceNavigation();
@@ -29,9 +28,9 @@ const CriarNovaFlorestaFlow: React.FC = () => {
     case 'avalie':
       return <AvalieSuaTerraIntegrated />;
     case 'valorize':
-      return <ValorizeSuaTerraPage />;
+      return <ValorizeSuaTerraIntegrated />;
     case 'monetize':
-      return <MonetizePage />;
+      return <MonetizeSuaTerraIntegrated />;
     default:
       return <MapeieSuaTerraIntegrated />;
   }

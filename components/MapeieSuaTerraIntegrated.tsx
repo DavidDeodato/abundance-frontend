@@ -3,7 +3,7 @@ import {
     UploadCloudIcon, MapIcon, SearchIcon, SparklesIcon, CheckCircleIcon 
 } from '../constants';
 import { useMapeieFlow, useAbundanceNavigation } from '../contexts/AbundanceFlowContext';
-import { relatorioApi, userApi, handleApiError, userSession } from '../services/apiService';
+import { relatorioApi, userApi, handleApiError, userSession, projecaoApi } from '../services/apiService';
 import InteractiveMap from './InteractiveMap'; // Importar o mapa interativo
 import { FeatureCollection } from 'geojson'; // Importar o tipo
 
@@ -195,11 +195,23 @@ const MapeieSuaTerraIntegrated: React.FC = () => {
     mapeie.reset();
   };
 
-  const handleNavigateToAvalie = () => {
-    if (mapeie.results?.relatorio_id) {
+  const handleNavigateToAvalie = async () => {
+    if (!mapeie.results?.relatorio_id) {
+      mapeie.setError('ID do relatório não encontrado para gerar o AI Blueprint.');
+      return;
+    }
+    
+    mapeie.setLoading(true);
+    try {
+      // Chamar a API para gerar a projeção
+      await projecaoApi.gerarProjecaoAvalieTerra(mapeie.results.relatorio_id);
+      // O estado da projeção será carregado automaticamente pelo AvalieSuaTerraIntegrated
+      
       navigation.navigateTo('avalie');
-    } else {
-      mapeie.setError('Complete a análise primeiro para prosseguir para a próxima etapa');
+    } catch (error) {
+      mapeie.setError(handleApiError(error));
+    } finally {
+      mapeie.setLoading(false);
     }
   };
 
@@ -513,9 +525,9 @@ const MapeieSuaTerraIntegrated: React.FC = () => {
             <button 
               onClick={handleNavigateToAvalie} 
               className="bg-abundanceGreenDark text-white px-8 py-3 rounded-md hover:bg-abundanceGreen transition-colors font-semibold text-lg disabled:opacity-50"
-              disabled={!mapeie.results?.relatorio_id}
+              disabled={!mapeie.results?.relatorio_id || mapeie.loading}
             >
-              Confirmar Interesse e Ver AI Blueprint
+              {mapeie.loading ? 'Gerando AI Blueprint...' : 'Confirmar Interesse e Ver AI Blueprint'}
             </button>
             <button 
               onClick={resetMapeieFlow} 

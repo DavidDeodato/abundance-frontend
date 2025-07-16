@@ -299,8 +299,8 @@ export const relatorioApi = {
 
 // Projecao API functions (Aba 2 - AvalieSuaTerra)
 export const projecaoApi = {
-  async gerarProjecaoAvalieTerra(relatorioId: number, userId: number): Promise<any> {
-    const response = await fetch(`${API_BASE_URL}/projecoes/gerar-avalie-terra/${relatorioId}?user_id=${userId}`, {
+  async gerarProjecaoAvalieTerra(relatorioId: number): Promise<any> {
+    const response = await fetch(`${API_BASE_URL}/projecoes/gerar-avalie-terra/${relatorioId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -316,7 +316,6 @@ export const projecaoApi = {
     if (!result.success) {
       throw new Error(result.error || 'Failed to generate projection');
     }
-
     return result.data;
   },
 
@@ -508,6 +507,36 @@ export const florestaApi = {
 
     return result.data;
   },
+
+  async createFloresta(formData: any): Promise<any> {
+    const response = await fetch(`${API_BASE_URL}/florestas/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.detail || 'Failed to create forest project');
+    }
+
+    const result = await response.json();
+    if (!result.success) {
+      throw new Error(result.error || 'Failed to create forest project');
+    }
+    return result.data;
+  },
+
+  async getMarketplaceProjetos(): Promise<any[]> {
+    const response = await fetch(`${API_BASE_URL}/florestas/marketplace`);
+    if (!response.ok) {
+        throw new Error('Failed to fetch marketplace projects');
+    }
+    const result = await response.json();
+    return result.data;
+  },
 };
 
 // Flow API - Helpers for the complete 4-tab flow
@@ -588,7 +617,7 @@ export const flowApi = {
     pre_population_data: any;
     next_step: 'valorize';
   }> {
-    const projecao = await projecaoApi.gerarProjecaoAvalieTerra(relatorioId, userId);
+    const projecao = await projecaoApi.gerarProjecaoAvalieTerra(relatorioId);
     const prePopulationData = await florestaApi.obterDadosPrePopulacao(relatorioId, projecao.id, userId);
     
     return {
